@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from bson.objectid import ObjectId
 import json
+import os
 
 agent_bp = Blueprint('agent', __name__)
 
@@ -16,7 +17,8 @@ def get_recommendation():
         return jsonify({"msg": "Profile not found"}), 404
 
     # Load market data
-    with open('market_data.json') as f:
+    # market_data_path = os.path.join(current_app.root_path, 'static', 'market_data.json')
+    with open('static/market_data.json') as f:
         market_data = json.load(f)
 
     risk = profile["risk_appetite"].lower()

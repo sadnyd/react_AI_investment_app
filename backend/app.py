@@ -1,13 +1,15 @@
-from flask import Flask
+from flask import Flask, Response, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
+import subprocess
 
-from auth import auth_bp
-from profile import profile_bp
-from agent import agent_bp
+
+from routes.auth import auth_bp
+from routes.profile import profile_bp
+from routes.agent import agent_bp
 
 
 load_dotenv()
@@ -27,6 +29,25 @@ def home():
             "/api/agent"
         ]
     }, 200
+
+    
+@app.route("/health", methods=["GET"])
+def health():
+    try:
+        # Use pytest as subprocess
+        result = subprocess.run(
+            ["pytest", "tests/test.py", "--tb=short", "-q"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        return Response(result.stdout, mimetype="text/plain"), 200
+    except subprocess.CalledProcessError as e:
+        return Response(
+            f"Health check failed:\n{e.stdout}\n{e.stderr}",
+            mimetype="text/plain"
+        ), 500
+
 
 
 # Configure JWT secret key from environment

@@ -5,13 +5,13 @@ import json
 BASE_URL = "http://localhost:5000/api"
 
 TEST_USER = {
-    "username": "testuser",
-    "email": "testuser@example.com",
+    "username": "testuser01",
+    "email": "testuser01@example.com",
     "password": "Password123!"
 }
 
 TEST_PROFILE = {
-    "name": "Test User",
+    "name": "Test User 01",
     "monthly_income": 50000,
     "monthly_expenses": 20000,
     "risk_appetite": "High",
