@@ -14,6 +14,8 @@ from routes.profile import profile_bp
 from routes.agent import agent_bp
 from routes.profile_get import profile_get_bp
 from routes.health import health_bp
+from routes.market_data import market_data_bp
+
 
 
 load_dotenv()
@@ -30,6 +32,7 @@ def home():
             "/api/db-test",
             "/api/auth",
             "/api/profile",
+            "/api/marketData",
             "/api/agent"
         ]
     }, 200
@@ -54,6 +57,8 @@ app.register_blueprint(profile_bp, url_prefix="/api")
 app.register_blueprint(agent_bp, url_prefix="/api")
 app.register_blueprint(profile_get_bp, url_prefix="/api")
 app.register_blueprint(health_bp, url_prefix="/api")
+app.register_blueprint(market_data_bp, url_prefix="/api")
+
 
 
 # Make DB accessible in blueprints
