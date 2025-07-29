@@ -5,11 +5,15 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 import subprocess
+import json
+
 
 
 from routes.auth import auth_bp
 from routes.profile import profile_bp
 from routes.agent import agent_bp
+from routes.profile_get import profile_get_bp
+from routes.health import health_bp
 
 
 load_dotenv()
@@ -30,23 +34,7 @@ def home():
         ]
     }, 200
 
-    
-@app.route("/health", methods=["GET"])
-def health():
-    try:
-        # Use pytest as subprocess
-        result = subprocess.run(
-            ["pytest", "tests/test.py", "--tb=short", "-q"],
-            capture_output=True,
-            text=True,
-            check=True
-        )
-        return Response(result.stdout, mimetype="text/plain"), 200
-    except subprocess.CalledProcessError as e:
-        return Response(
-            f"Health check failed:\n{e.stdout}\n{e.stderr}",
-            mimetype="text/plain"
-        ), 500
+   
 
 
 
@@ -64,6 +52,9 @@ db = client[db_name]
 app.register_blueprint(auth_bp, url_prefix="/api")
 app.register_blueprint(profile_bp, url_prefix="/api")
 app.register_blueprint(agent_bp, url_prefix="/api")
+app.register_blueprint(profile_get_bp, url_prefix="/api")
+app.register_blueprint(health_bp, url_prefix="/api")
+
 
 # Make DB accessible in blueprints
 app.config["DB"] = db
